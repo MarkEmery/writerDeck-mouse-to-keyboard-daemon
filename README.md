@@ -42,9 +42,11 @@ Next copy the startup files to the right place.
 ```
 cd ~/writerDeck-mouse-to-keyboard-daemon
 vi MOUSE
-cp start-mouse-keyboard-daemon.sh /etc/init.d/
-ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/S02mkd
-chmod +x /etc/rc5.d/S02mkd
-systemctl daemon-reload
+cp mkd.service /etc/systemd/system
+systemctl enable mkd.service
+systemctl start mkd.service
 ```
 A reboot should have the daemon start up automatically.
+
+**KNOWN ISSUES:**
+The first time Tilde runs, the mouse will move the cursor, but the left click-hold doesn't hold down the shift key. If Tilde is exited, 'exit' typed into the shell prompt so it returns to Tilde, then mouse and button events work properly.
