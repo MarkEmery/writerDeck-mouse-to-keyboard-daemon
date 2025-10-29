@@ -1,0 +1,13 @@
+[Unit]
+Description=Mouse to Keyboard event daemon
+After=multi-user.target
+
+[Service]
+ExecStart=/root/writerDeck-mouse-to-keyboard-daemon/start.sh
+KillMode=process
+Restart=on-failure
+Type=notify
+
+[Install]
+WantedBy=mkd.target
+Alias=mkd.service
