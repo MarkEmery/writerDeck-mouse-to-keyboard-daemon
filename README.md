@@ -10,7 +10,7 @@ git clone https://github.com/MarkEmery/writerDeck-mouse-to-keyboard-daemon
 cd writerDeck-mouse-to-keyboard-daemon
 ./bin/pip3 install evdev keyboard
 ```
-Now we need to find the event handler for our mouse. WITHOUT the mouse plugged in, check which events are returned.
+Now we need to find the event handler for our mouse. WITHOUT the mouse plugged in, check which DEVICES are returned.
 
 ```
 root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 mouse
@@ -22,7 +22,7 @@ B: PROP=9
 B: EV=b
 B: KEY=6420 30000 0 0 0 0
 ```
-Now plug the mouse in and run the command again. The mouse will be the newly added entry. Note the event number. In this example it's 14.
+Now plug the mouse in and run the command again. The mouse will be the newly added entry. Note the DEVICE details. In this example it's 14.
 
 ```
 root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 mouse
@@ -48,8 +48,8 @@ Edit the python script to make reference to the correct event number, then copy 
 ```
 cd ~/writerDeck-mouse-to-keyboard-daemon
 cp start-mouse-keyboard-daemon.sh /etc/init.d/
-ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/
-chmod +x /etc/rc5.d/start-mouse-keyboard-daemon.sh
+ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/S02mkd
+chmod +x /etc/rc5.d/S02mkd
 ```
 
 A reboot should have the daemon start up automatically.
