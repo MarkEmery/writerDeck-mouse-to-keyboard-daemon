@@ -45,5 +45,6 @@ vi MOUSE
 cp start-mouse-keyboard-daemon.sh /etc/init.d/
 ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/S02mkd
 chmod +x /etc/rc5.d/S02mkd
+systemctl daemon-reload
 ```
 A reboot should have the daemon start up automatically.
