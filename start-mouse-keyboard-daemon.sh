@@ -14,13 +14,15 @@
 ### END INIT INFO
 
 if [ -f /root/writerDeck-mouse-to-keyboard-daemon/bin/python3 ]; then
+    device=`cat /root/writerDeck-mouse-to-keyboard-daemon/MOUSE`
+    event=`cat /proc/bus/input/devices | egrep -A 2 $device | fgrep event | awk '{print $NF}'`
     case "$1" in
         stop)
             pkill -f evtranslate.py
             ;;
         start)
             echo 
-            /root/writerDeck-mouse-to-keyboard-daemon/bin/python3 /root/writerDeck-mouse-to-keyboard-daemon/evtranslate.py &
+            /root/writerDeck-mouse-to-keyboard-daemon/bin/python3 /root/writerDeck-mouse-to-keyboard-daemon/evtranslate.py $event &
             ;;
         status)
             ps -ef | fgrep evtranslate
