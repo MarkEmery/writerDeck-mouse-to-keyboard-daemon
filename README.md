@@ -48,7 +48,7 @@ Edit the python script to make reference to the correct event number, then copy 
 ```
 cd ~/writerDeck-mouse-to-keyboard-daemon
 cp start-mouse-keyboard-daemon.sh /etc/init.d/
-ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/start-mouse-keyboard-daemon.sh
+ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/
 chmod +x /etc/rc5.d/start-mouse-keyboard-daemon.sh
 ```
 
