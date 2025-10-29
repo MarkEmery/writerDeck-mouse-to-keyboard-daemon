@@ -1,7 +1,7 @@
 
 To install the mouse to keyboard code, you'll need to do the following.
 
-Exit Tilde to the shell and get root access to install the software and supporting code.
+Exit Tilde to the shell and get root access, install the software and supporting code.
 
 ```
 sudo su -
