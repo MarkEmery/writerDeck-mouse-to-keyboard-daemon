@@ -1,3 +1,4 @@
+
 To install the mouse to keyboard code, you'll need to do the following.
 
 Exit Tilde to the shell and get root access to install the software and supporting code.
@@ -10,40 +11,32 @@ git clone https://github.com/MarkEmery/writerDeck-mouse-to-keyboard-daemon
 cd writerDeck-mouse-to-keyboard-daemon
 ./bin/pip3 install evdev keyboard
 ```
-Now we need to find the event handler for our mouse. WITHOUT the mouse plugged in, check which DEVICES are returned.
+Now we need to find the event handler for our mouse. With it plugged in, run lsusb and note the device ID. In the example below it's 30DA:0300.
 
 ```
-root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 mouse
-P: Phys=isa0060/serio1/input0
-S: Sysfs=/devices/platform/i8042/serio1/input/input3
-U: Uniq=
-H: Handlers=mouse0 event2 
-B: PROP=9
-B: EV=b
-B: KEY=6420 30000 0 0 0 0
+root@writerdeck:/etc/rc5.d# lsusb 
+Bus 002 Device 003: ID 5986:0292 Bison Electronics Inc. Lenovo Integrated Webcam
+Bus 002 Device 002: ID 0bda:0139 Realtek Semiconductor Corp. RTS5139 Card Reader Controller
+Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 002: ID 30fa:0300  USB Optical Mouse
+Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 ```
-Now plug the mouse in and run the command again. The mouse will be the newly added entry. Note the DEVICE details. In this example it's 14.
+With the device ID, we can have the startup script find the Event Handler. Sadly this can change from reboot to reboot!
 
 ```
-root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 mouse
-P: Phys=isa0060/serio1/input0
-S: Sysfs=/devices/platform/i8042/serio1/input/input3
-U: Uniq=
-H: Handlers=mouse0 event2 
-B: PROP=9
-B: EV=b
-B: KEY=6420 30000 0 0 0 0
---
+root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 -i 30fa:0300 
+I: Bus=0003 Vendor=30fa Product=0300 Version=0111
+N: Name="USB Optical Mouse "
 P: Phys=usb-0000:00:12.0-1/input0
-S: Sysfs=/devices/pci0000:00/0000:00:12.0/usb3/3-1/3-1:1.0/0003:30FA:0300.0003/input/input17
+S: Sysfs=/devices/pci0000:00/0000:00:12.0/usb3/3-1/3-1:1.0/0003:30FA:0300.0001/input/input4
 U: Uniq=
-H: Handlers=mouse1 event14 
+H: Handlers=mouse0 event2 
 B: PROP=0
-B: EV=17
-B: KEY=1f0000 0 0 0 0
 ```
-
-Edit the python script to make reference to the correct event number, then copy the startup files to the right place.
+In the ~/writerDeck-mouse-to-keyboard-daemon directory, create a file MOUSE and add a single line with this device ID.
+Next copy the startup files to the right place.
 
 ```
 cd ~/writerDeck-mouse-to-keyboard-daemon
@@ -51,8 +44,4 @@ cp start-mouse-keyboard-daemon.sh /etc/init.d/
 ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/S02mkd
 chmod +x /etc/rc5.d/S02mkd
 ```
-
 A reboot should have the daemon start up automatically.
-
-
-
