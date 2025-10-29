@@ -41,6 +41,7 @@ Next copy the startup files to the right place.
 
 ```
 cd ~/writerDeck-mouse-to-keyboard-daemon
+vi MOUSE
 cp start-mouse-keyboard-daemon.sh /etc/init.d/
 ln -s /etc/init.d/start-mouse-keyboard-daemon.sh /etc/rc5.d/S02mkd
 chmod +x /etc/rc5.d/S02mkd
