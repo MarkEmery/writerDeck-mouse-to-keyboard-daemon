@@ -11,7 +11,7 @@ git clone https://github.com/MarkEmery/writerDeck-mouse-to-keyboard-daemon
 cd writerDeck-mouse-to-keyboard-daemon
 ./bin/pip3 install evdev keyboard
 ```
-Now we need to find the event handler for our mouse. With it plugged in, run lsusb and note the device ID. In the example below it's 30DA:0300.
+With the mouse plugged in, run lsusb and note the device ID. In the example below it's 30DA:0300.
 
 ```
 root@writerdeck:/etc/rc5.d# lsusb 
@@ -20,10 +20,11 @@ Bus 002 Device 002: ID 0bda:0139 Realtek Semiconductor Corp. RTS5139 Card Reader
 Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 003 Device 002: ID 30fa:0300  USB Optical Mouse
+Bus 003 Device 002: ID 30fa:0300  USB Optical Mouse  <<<<<<<<<<<<<
 Bus 003 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 ```
-With the device ID, we can have the startup script find the Event Handler. Sadly this can change from reboot to reboot!
+Sadly the event handler number for any given device can change from reboot to reboot, so we need the startup script to find it.
+To see this for yourself, run the following after each reboot. (Change 30fa:0300 to your unique Device ID)
 
 ```
 root@writerdeck:~/writerDeck-mouse-to-keyboard-daemon# cat /proc/bus/input/devices | egrep -B 3 -A 3 -i 30fa:0300 
@@ -35,7 +36,7 @@ U: Uniq=
 H: Handlers=mouse0 event2 
 B: PROP=0
 ```
-In the ~/writerDeck-mouse-to-keyboard-daemon directory, create a file MOUSE and add a single line with this device ID.
+In the ~/writerDeck-mouse-to-keyboard-daemon directory, create a file MOUSE and add a single line with your device ID.
 Next copy the startup files to the right place.
 
 ```
